@@ -3,8 +3,8 @@ const initialProducts = [
         id:1,
         name: "Kablosuz Kulaklık",
         store: "Teknoloji Mağazası",
-        purchaseDate: "2023-01-15",
-        returnPeriodDays: 30,
+        purchaseDate: "2026-09-01",
+        returnPeriodDays: 14,
         isReturned: false
     },
     {
