@@ -18,12 +18,21 @@ function App() {
       }),
     )
   }
+  function addProduct(newProduct) {
+    const newProductWithId = { 
+      ...newProduct,
+      id: Date.now(),
+      isReturned: false,
+    }
+    newProductWithId.returnPeriodDays = Number(newProductWithId.returnPeriodDays)
+   setProducts((currentProducts) => [newProductWithId, ...currentProducts])
+  }
 
   return (
     <main>
       <h1>ReturnTrack</h1>
       <p>İade sürenizi kaçırmayın.</p>
-      <ProductForm />
+      <ProductForm onAddProduct={addProduct} />
       <ul className="ProductList">
         {products.map((product) => (
           <ProductCard
