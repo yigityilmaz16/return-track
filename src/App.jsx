@@ -20,6 +20,11 @@ function App() {
       }),
     )
   }
+  function deleteProduct(id) {
+    setProducts((currentProducts) =>
+      currentProducts.filter((product) => product.id !== id),
+    )
+  }
   function addProduct(newProduct) {
     const newProductWithId = { 
       ...newProduct,
@@ -57,7 +62,7 @@ function App() {
         <option value="returned">İade Edilenler</option>
         <option value="expired">Süresi Dolanlar</option>
       </select>
-      <ProductList products={filteredProducts} onReturnToggle={returnEventHandler} />
+      <ProductList products={filteredProducts} onReturnToggle={returnEventHandler} onDeleteProduct={deleteProduct} />
     </main>
   )
 }

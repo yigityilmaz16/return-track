@@ -1,6 +1,6 @@
 import ProductCard from './ProductCard.jsx'
 
-function ProductList({ products, onReturnToggle }) {
+function ProductList({ products, onReturnToggle, onDeleteProduct }) {
     if (products.length === 0) {
         return <p>Henüz ürün eklenmedi.</p>
     }
@@ -11,6 +11,7 @@ function ProductList({ products, onReturnToggle }) {
                     key={product.id}
                     product={product}
                     onReturnToggle={onReturnToggle}
+                    onDeleteProduct={onDeleteProduct}
                 />
             ))}
         </ul>

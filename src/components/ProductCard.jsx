@@ -1,6 +1,6 @@
 import calculateRemainingDays from '../utils/calculateRemainingDays.js'
 
-function ProductCard({ product, onReturnToggle }) {
+function ProductCard({ product, onReturnToggle, onDeleteProduct }) {
   const remainingDays = calculateRemainingDays(
     product.purchaseDate,
     product.returnPeriodDays,
@@ -29,6 +29,9 @@ function ProductCard({ product, onReturnToggle }) {
         {product.isReturned
           ? 'İade Durumunu Geri Al'
           : 'İade Edildi Olarak İşaretle'}
+      </button>
+      <button type="button" onClick={() => onDeleteProduct(product.id)}>
+        Ürünü Sil
       </button>
     </li>
   )
