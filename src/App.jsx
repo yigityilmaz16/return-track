@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ProductCard from './components/ProductCard.jsx'
 import initialProducts from './data/products.js'
 import './App.css'
+import ProductForm from './components/ProductForm.jsx'
 
 function App() {
   const [products, setProducts] = useState(initialProducts)
@@ -22,6 +23,7 @@ function App() {
     <main>
       <h1>ReturnTrack</h1>
       <p>İade sürenizi kaçırmayın.</p>
+      <ProductForm />
       <ul className="ProductList">
         {products.map((product) => (
           <ProductCard
