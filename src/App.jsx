@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import ProductCard from './components/ProductCard.jsx'
 import initialProducts from './data/products.js'
 import './App.css'
 import ProductForm from './components/ProductForm.jsx'
+import ProductList from './components/ProductList.jsx'
 
 function App() {
   const [products, setProducts] = useState(initialProducts)
@@ -33,15 +33,7 @@ function App() {
       <h1>ReturnTrack</h1>
       <p>İade sürenizi kaçırmayın.</p>
       <ProductForm onAddProduct={addProduct} />
-      <ul className="ProductList">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onReturnToggle={returnEventHandler}
-          />
-        ))}
-      </ul>
+      <ProductList products={products} onReturnToggle={returnEventHandler} />
     </main>
   )
 }
