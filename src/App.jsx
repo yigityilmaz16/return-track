@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import initialProducts from './data/products.js'
 import './App.css'
 import ProductForm from './components/ProductForm.jsx'
@@ -6,8 +6,21 @@ import ProductList from './components/ProductList.jsx'
 import calculateRemainingDays from './utils/calculateRemainingDays.js'
 
 function App() {
-  const [products, setProducts] = useState(initialProducts)
+  const [products, setProducts] = useState(() => {
+    const storedProducts = localStorage.getItem("products");
+    try {
+      return storedProducts ? JSON.parse(storedProducts) : initialProducts;
+    } catch (error) {
+      console.error("Error parsing products from localStorage:", error);
+      return initialProducts;
+    }
+  });
   const [selectedFilter, setSelectedFilter] = useState('all')
+
+  useEffect(() => {
+    localStorage.setItem("products", JSON.stringify(products));
+  }, [products]);
+    
 
   function returnEventHandler(id) {
     setProducts((currentProducts) =>
