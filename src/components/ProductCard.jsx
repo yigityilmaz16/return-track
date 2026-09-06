@@ -1,4 +1,5 @@
 import calculateRemainingDays from '../utils/calculateRemainingDays.js'
+import {Link} from 'react-router-dom'
 
 function ProductCard({ product, onReturnToggle, onDeleteProduct }) {
   const remainingDays = calculateRemainingDays(
@@ -33,6 +34,7 @@ function ProductCard({ product, onReturnToggle, onDeleteProduct }) {
       <button type="button" onClick={() => onDeleteProduct(product.id)}>
         Ürünü Sil
       </button>
+      <Link to={`/products/${product.id}`}>Detayları Görüntüle</Link>
     </li>
   )
 }

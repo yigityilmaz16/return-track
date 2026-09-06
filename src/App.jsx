@@ -3,6 +3,8 @@ import DashboardPage from './pages/DashboardPage.jsx'
 import AboutPage from './pages/AboutPage.jsx'
 import Navbar from './components/Navbar.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
+import ProductDetailPage from './pages/ProductDetailPage.jsx' 
+
 
 function App() {
   return (
@@ -11,6 +13,7 @@ function App() {
     <Routes>
       <Route path="/" element={<DashboardPage />} />
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/products/:productid" element={<ProductDetailPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
     </>
