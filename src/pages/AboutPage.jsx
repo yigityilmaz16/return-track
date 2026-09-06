@@ -1,5 +1,3 @@
-
-
 function AboutPage(){
     return (
         <main className="about-page">
