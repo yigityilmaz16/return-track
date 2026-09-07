@@ -30,7 +30,7 @@ function DashboardPage() {
      <main>
       <h1>ReturnTrack</h1>
       <p>İade sürenizi kaçırmayın.</p>
-      <ProductForm onAddProduct={addProduct} />
+      <ProductForm sendProductOnForm={addProduct} />
       <label htmlFor="filter">Filtrele:</label>
       <select id="filter" value={selectedFilter} onChange={(e) => setSelectedFilter(e.target.value)}>
         <option value="all">Tüm Ürünler</option>

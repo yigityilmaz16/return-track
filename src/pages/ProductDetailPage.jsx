@@ -33,6 +33,8 @@ function ProductDetailPage() {
                 <button type="button" onClick={() => handleDeleteProduct(product.id)}>Ürünü Sil</button>
                 <br />
                 <Link to="/">Ana Sayfaya Dön</Link>
+                <br />
+                <Link to={`/products/${product.id}/edit`}>Ürünü Düzenle</Link>
             </div>
         )
     }

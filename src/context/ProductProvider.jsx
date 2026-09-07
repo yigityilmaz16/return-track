@@ -18,6 +18,20 @@ function ProductProvider({ children }) {
     localStorage.setItem('products', JSON.stringify(products))
   }, [products])
 
+  function updateProduct(id, updatedProduct) {
+    setProducts((currentProducts) =>
+      currentProducts.map((product) =>
+        product.id === id
+          ? {
+              ...product,
+              ...updatedProduct,
+              returnPeriodDays: Number(updatedProduct.returnPeriodDays),
+            }
+          : product,
+      ),
+    )
+  }
+
   function toggleReturnStatus(id) {
     setProducts((currentProducts) =>
       currentProducts.map((product) => {
@@ -52,6 +66,7 @@ function ProductProvider({ children }) {
     addProduct,
     deleteProduct,
     toggleReturnStatus,
+    updateProduct,
   }
 
   return (

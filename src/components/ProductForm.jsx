@@ -1,12 +1,14 @@
 import {useState} from 'react';
-
-function ProductForm({ onAddProduct }) {
-    const [formData, setFormData] = useState({
+const defaultFormData = {
         name: '',
         store: '',
         purchaseDate: '',
         returnPeriodDays: '',
-    });
+    };
+
+function ProductForm({ sendProductOnForm, submitButtonText = "Ürün Ekle",  initialFormData }) {
+    const startingFormData = initialFormData || defaultFormData;
+    const [formData, setFormData] = useState({...startingFormData});
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -29,13 +31,8 @@ function ProductForm({ onAddProduct }) {
             purchaseDate: formData.purchaseDate,
             returnPeriodDays: Number(formData.returnPeriodDays),
         };
-        onAddProduct(newProduct);
-        setFormData({
-            name: '',
-            store: '',
-            purchaseDate: '',
-            returnPeriodDays: '',
-        });
+       sendProductOnForm(newProduct);
+       setFormData({...startingFormData});
     }
 
     return(
@@ -48,7 +45,7 @@ function ProductForm({ onAddProduct }) {
           <input type="date" name="purchaseDate" id="purchaseDate" placeholder="Satın Alma Tarihi" value={formData.purchaseDate} onChange={handleChange} required />
           <label htmlFor="returnPeriodDays">İade Süresi (gün)</label>
           <input type="number" name="returnPeriodDays" id="returnPeriodDays" placeholder="İade Süresi (gün)" min="1" value={formData.returnPeriodDays} onChange={handleChange} required />
-          <button type="submit">Ürün Ekle</button>
+          <button type="submit">{submitButtonText}</button>
         </form>
     )
 
