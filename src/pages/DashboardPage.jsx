@@ -4,6 +4,7 @@ import ProductForm from '../components/ProductForm.jsx'
 import ProductList from '../components/ProductList.jsx'
 import calculateRemainingDays from '../utils/calculateRemainingDays.js'
 import useProducts from '../hooks/useProducts.js'
+import DashboardStats from '../components/DashboardStats.jsx'
 
 function DashboardPage() {
   const [selectedFilter, setSelectedFilter] = useState('all')
@@ -30,6 +31,7 @@ function DashboardPage() {
      <main>
       <h1>ReturnTrack</h1>
       <p>İade sürenizi kaçırmayın.</p>
+      <DashboardStats products={products} />
       <ProductForm sendProductOnForm={addProduct} />
       <label htmlFor="filter">Filtrele:</label>
       <select id="filter" value={selectedFilter} onChange={(e) => setSelectedFilter(e.target.value)}>
