@@ -5,14 +5,22 @@ import ProductContext from './ProductContext.js'
 function ProductProvider({ children }) {
   const [products, setProducts] = useState(() => {
     const storedProducts = localStorage.getItem('products')
-
-    try {
-      return storedProducts ? JSON.parse(storedProducts) : initialProducts
-    } catch (error) {
-      console.error('Error parsing products from localStorage:', error)
+    if (!storedProducts) {
       return initialProducts
     }
-  })
+    try{
+      const parsedProducts = JSON.parse(storedProducts)
+      if (Array.isArray(parsedProducts)) {
+       return parsedProducts
+      }else{
+        return initialProducts
+      }}catch(error){
+        console.error('Error parsing products from localStorage:', error)
+        return initialProducts
+      }
+    
+    }
+)
 
   useEffect(() => {
     localStorage.setItem('products', JSON.stringify(products))
