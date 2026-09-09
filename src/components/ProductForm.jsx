@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import './ProductForm.css';
 const defaultFormData = {
         name: '',
         store: '',
@@ -58,4 +59,3 @@ function ProductForm({ sendProductOnForm, submitButtonText = "Ürün Ekle",  ini
 
 
 export default ProductForm;
-    

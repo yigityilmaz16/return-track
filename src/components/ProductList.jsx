@@ -1,4 +1,5 @@
 import ProductCard from './ProductCard.jsx'
+import './ProductList.css'
 
 
 function ProductList({ products, onReturnToggle, onDeleteProduct, emptyMessage }) {

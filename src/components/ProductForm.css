@@ -1,0 +1,42 @@
+.ProductForm {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+  margin: 32px 0;
+  padding: 24px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.ProductForm label {
+  margin-top: 4px;
+}
+
+.ProductForm .error,
+.ProductForm button {
+  grid-column: 1 / -1;
+}
+
+.ProductForm button {
+  margin-top: 12px;
+}
+
+.error {
+  margin: 8px 0 0;
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .ProductForm {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .ProductForm .error,
+  .ProductForm button {
+    grid-column: auto;
+  }
+}

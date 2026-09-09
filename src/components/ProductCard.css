@@ -1,0 +1,45 @@
+.Product {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 22px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.Product h2 {
+  margin: 0 0 4px;
+  font-size: 1.25rem;
+}
+
+.Product p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.Product button:first-of-type {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.Product button:nth-of-type(2) {
+  width: 100%;
+  color: var(--color-danger);
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.Product button:nth-of-type(2):hover {
+  color: #ffffff;
+  background-color: var(--color-danger);
+}
+
+.Product a {
+  align-self: center;
+  margin-top: 4px;
+  font-weight: 700;
+  text-decoration: none;
+}

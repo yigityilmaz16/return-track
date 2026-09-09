@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import '../App.css'
+import './DashboardPage.css'
 import ProductForm from '../components/ProductForm.jsx'
 import ProductList from '../components/ProductList.jsx'
 import calculateRemainingDays from '../utils/calculateRemainingDays.js'

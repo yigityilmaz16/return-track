@@ -1,0 +1,28 @@
+main {
+  width: min(1100px, calc(100% - 48px));
+  margin: 40px auto;
+}
+
+main > h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+main > h1 + p {
+  margin: 8px 0 32px;
+  color: var(--color-muted);
+  font-size: 1.05rem;
+}
+
+main > button {
+  margin-top: 16px;
+}
+
+@media (max-width: 600px) {
+  main {
+    width: min(100% - 32px, 1100px);
+    margin-top: 28px;
+  }
+}

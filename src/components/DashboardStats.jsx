@@ -1,4 +1,5 @@
 import calculateRemainingDays from "../utils/calculateRemainingDays.js";
+import './DashboardStats.css';
 
 
 function DashboardStats({products}) {

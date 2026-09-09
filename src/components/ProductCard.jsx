@@ -1,5 +1,6 @@
 import calculateRemainingDays from '../utils/calculateRemainingDays.js'
 import {Link} from 'react-router-dom'
+import './ProductCard.css'
 
 function ProductCard({ product, onReturnToggle, onDeleteProduct }) {
   const remainingDays = calculateRemainingDays(
