@@ -46,10 +46,22 @@ function DashboardPage() {
     return 0
   })
 
+  function resetViewOptions(){
+    setSearchTerm("")
+    setSelectedFilter('all')
+    setSortBy("default")
+  }
+
+
   let emptyMessage = "Filtreyle eşleşen bir ürün yok."
 
    if(products.length === 0){
     emptyMessage = "Henüz ürün eklenmedi"
+   }
+
+   let hasActiveOptions =false
+   if(searchTerm || selectedFilter !== 'all' || sortBy !== "default"){
+    hasActiveOptions= true
    }
 
   return (
@@ -74,6 +86,7 @@ function DashboardPage() {
         <option value="returned">İade Edilenler</option>
         <option value="expired">Süresi Dolanlar</option>
       </select>
+      <button type="button" name="resetButton" disabled={!hasActiveOptions} onClick={resetViewOptions}>Filtreleri Temizle</button>
       <ProductList products={sortedProducts} onReturnToggle={toggleReturnStatus} onDeleteProduct={deleteProduct} emptyMessage={emptyMessage} />
     </main>
   )
