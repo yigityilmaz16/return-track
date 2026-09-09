@@ -11,6 +11,7 @@ function DashboardPage() {
 
   const { products, addProduct, toggleReturnStatus, deleteProduct } = useProducts()
   const [searchTerm, setSearchTerm] = useState("")
+  const [sortBy, setSortBy] = useState("default") 
   
 
   const filteredProducts = products.filter((product) => {
@@ -33,11 +34,31 @@ function DashboardPage() {
     return true
   })
 
+   const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === "remainingDaysAsc") {
+      const remainingDaysA = calculateRemainingDays(a.purchaseDate, a.returnPeriodDays)
+      const remainingDaysB = calculateRemainingDays(b.purchaseDate, b.returnPeriodDays)
+      return remainingDaysA - remainingDaysB
+    } else if (sortBy === "purchaseDateDesc") {
+      return new Date(b.purchaseDate) - new Date(a.purchaseDate)
+    } else if (sortBy === "nameAsc") {
+      return a.name.localeCompare(b.name)
+    }
+    return 0
+  })
+
   return (
      <main>
       <h1>ReturnTrack</h1>
       <p>İade sürenizi kaçırmayın.</p>
       <DashboardStats products={products} />
+      <label htmlFor="sort">Sırala:</label>
+      <select id="sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+        <option value="default">Varsayılan</option>
+        <option value="remainingDaysAsc">İade Süresi En Az Kalan</option>
+        <option value="purchaseDateDesc">En Yeni Satın Alınan</option>
+        <option value="nameAsc">İsme Göre A-Z</option>
+      </select>
       <label htmlFor="search">Ürün Ara:</label>
       <input type="text" id="search" placeholder="Ürün Ara..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
       <ProductForm sendProductOnForm={addProduct} />
@@ -48,7 +69,7 @@ function DashboardPage() {
         <option value="returned">İade Edilenler</option>
         <option value="expired">Süresi Dolanlar</option>
       </select>
-      <ProductList products={filteredProducts} onReturnToggle={toggleReturnStatus} onDeleteProduct={deleteProduct} />
+      <ProductList products={sortedProducts} onReturnToggle={toggleReturnStatus} onDeleteProduct={deleteProduct} />
     </main>
   )
 }
