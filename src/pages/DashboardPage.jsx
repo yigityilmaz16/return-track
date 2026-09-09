@@ -12,8 +12,7 @@ function DashboardPage() {
   const { products, addProduct, toggleReturnStatus, deleteProduct } = useProducts()
   const [searchTerm, setSearchTerm] = useState("")
   const [sortBy, setSortBy] = useState("default") 
-  
-
+ 
   const filteredProducts = products.filter((product) => {
     const remainingDays = calculateRemainingDays(
       product.purchaseDate,
@@ -47,6 +46,12 @@ function DashboardPage() {
     return 0
   })
 
+  let emptyMessage = "Filtreyle eşleşen bir ürün yok."
+
+   if(products.length === 0){
+    emptyMessage = "Henüz ürün eklenmedi"
+   }
+
   return (
      <main>
       <h1>ReturnTrack</h1>
@@ -69,7 +74,7 @@ function DashboardPage() {
         <option value="returned">İade Edilenler</option>
         <option value="expired">Süresi Dolanlar</option>
       </select>
-      <ProductList products={sortedProducts} onReturnToggle={toggleReturnStatus} onDeleteProduct={deleteProduct} />
+      <ProductList products={sortedProducts} onReturnToggle={toggleReturnStatus} onDeleteProduct={deleteProduct} emptyMessage={emptyMessage} />
     </main>
   )
 }

@@ -1,8 +1,9 @@
 import ProductCard from './ProductCard.jsx'
 
-function ProductList({ products, onReturnToggle, onDeleteProduct }) {
+
+function ProductList({ products, onReturnToggle, onDeleteProduct, emptyMessage }) {
     if (products.length === 0) {
-        return <p>Henüz ürün eklenmedi.</p>
+        return <p>{emptyMessage}</p>
     }
     return (
         <ul className="ProductList">
