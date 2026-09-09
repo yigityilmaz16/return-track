@@ -7,6 +7,13 @@ function ProductCard({ product, onReturnToggle, onDeleteProduct }) {
     product.returnPeriodDays,
   )
 
+  function deleteProduct(id) {
+   const conf= window.confirm("Onaylıyor musunuz?" )
+   if(conf){
+     onDeleteProduct(id)
+   }
+  }
+
   let returnStatus
 
   if (product.isReturned) {
@@ -31,7 +38,7 @@ function ProductCard({ product, onReturnToggle, onDeleteProduct }) {
           ? 'İade Durumunu Geri Al'
           : 'İade Edildi Olarak İşaretle'}
       </button>
-      <button type="button" onClick={() => onDeleteProduct(product.id)}>
+      <button type="button" onClick={() => deleteProduct(product.id)}>
         Ürünü Sil
       </button>
       <Link to={`/products/${product.id}`}>Detayları Görüntüle</Link>
