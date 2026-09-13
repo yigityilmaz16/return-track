@@ -57,6 +57,26 @@ app.delete("/products/:id", (req,res) =>{
     res.status(200).json(deletedProduct)
 
 })
+app.patch("/products/:id/return-status", (req,res) =>{
+    const product = products.find(
+        product => product.id === Number(req.params.id) 
+    )
+    if(!product){
+       res.status(404).json({
+         message: "Ürün Bulunamadı"
+       })
+       return;
+    }
+    const {isReturned} = req.body
+    if(typeof isReturned !== 'boolean'){
+        res.status(400).json({
+         message: "isReturned True veya False Olmalı"
+       })
+       return;
+    }
+    product.isReturned= isReturned
+    res.status(200).json(product)
+})
 app.listen(3000, () =>{
     console.log("API dinleniyor");
 })
