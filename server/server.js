@@ -10,19 +10,22 @@ app.get("/products", (req,res) =>{
 })
 
 app.post("/products", (req,res) =>{
-    if(!req.body.store || !req.body.name || !req.body.purchaseDate || !req.body.returnPeriodDays || Number(req.body.returnPeriodDays) <= 0){
+    const { name, store, purchaseDate, returnPeriodDays } = req.body
+    const cleanName = typeof name === 'string' ? name.trim() : ''
+    const cleanStore = typeof store === 'string' ? store.trim() : ''
+    const cleanReturnPeriodDays = Number(returnPeriodDays)
+        if(!cleanStore || !cleanName || !purchaseDate || cleanReturnPeriodDays <= 0 || !Number.isFinite(cleanReturnPeriodDays)){
         res.status(400).json({
             message : "Tüm Alanlar Dolu Olmalı Veya Sayılar Pozitif Olmalı!"
         })
         return;
     }
-
     const newProduct ={
         id: Date.now(),
-        name: req.body.name,
-        store: req.body.store,
-        purchaseDate: req.body.purchaseDate,
-        returnPeriodDays: Number(req.body.returnPeriodDays),
+        name: cleanName,
+        store: cleanStore,
+        purchaseDate: purchaseDate,
+        returnPeriodDays: cleanReturnPeriodDays,
         isReturned: false
     }
     products.push(newProduct);
