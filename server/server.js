@@ -44,6 +44,19 @@ app.get("/products/:id", (req,res) =>{
     }
     res.status(200).json(product)
 })
+app.delete("/products/:id", (req,res) =>{
+    const index= products.findIndex(
+        product => product.id === Number(req.params.id)
+    )
+    if (index === -1) {
+    return res.status(404).json({
+        message: "Ürün Bulunamadı"
+    });
+    }
+    const [deletedProduct] = products.splice(index, 1)
+    res.status(200).json(deletedProduct)
+
+})
 app.listen(3000, () =>{
     console.log("API dinleniyor");
 })
