@@ -10,6 +10,13 @@ app.get("/products", (req,res) =>{
 })
 
 app.post("/products", (req,res) =>{
+    if(!req.body.store || !req.body.name || !req.body.purchaseDate || !req.body.returnPeriodDays || Number(req.body.returnPeriodDays) <= 0){
+        res.status(400).json({
+            message : "Tüm Alanlar Dolu Olmalı Veya Sayılar Pozitif Olmalı!"
+        })
+        return;
+    }
+
     const newProduct ={
         id: Date.now(),
         name: req.body.name,
