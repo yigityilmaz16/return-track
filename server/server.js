@@ -32,6 +32,18 @@ app.post("/products", (req,res) =>{
     res.status(201).json(newProduct);
 
 })
+app.get("/products/:id", (req,res) =>{
+    const product = products.find(
+        product => product.id === Number(req.params.id)
+    )
+    if(!product){
+        res.status(404).json({
+            message: "Ürün Bulunamadı"
+        })
+        return;
+    }
+    res.status(200).json(product)
+})
 app.listen(3000, () =>{
     console.log("API dinleniyor");
 })
