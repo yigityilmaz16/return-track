@@ -22,6 +22,26 @@ function ProductProvider({ children }) {
     }
 )
 
+  useEffect(() =>{
+    async function fetchProducts() {
+      try{
+        const response= await fetch('http://localhost:3000/products')
+        if(!response.ok){
+          throw new Error('Hatalı')
+        }
+        const data= await response.json();
+        if(Array.isArray(data)){
+          setProducts(data)
+        }else{
+          throw new Error('Hata')
+        }
+      }catch(error){
+        console.log(error)
+      }
+    }
+    fetchProducts()
+  },[])
+
   useEffect(() => {
     localStorage.setItem('products', JSON.stringify(products))
   }, [products])
