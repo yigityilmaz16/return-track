@@ -1,27 +1,9 @@
 import { useEffect, useState } from 'react'
-import initialProducts from '../data/products.js'
 import ProductContext from './ProductContext.js'
 const API = 'http://localhost:3000/products'
 
 function ProductProvider({ children }) {
-  const [products, setProducts] = useState(() => {
-    const storedProducts = localStorage.getItem('products')
-    if (!storedProducts) {
-      return initialProducts
-    }
-    try{
-      const parsedProducts = JSON.parse(storedProducts)
-      if (Array.isArray(parsedProducts)) {
-       return parsedProducts
-      }else{
-        return initialProducts
-      }}catch(error){
-        console.error('Error parsing products from localStorage:', error)
-        return initialProducts
-      }
-    
-    }
-)
+  const [products, setProducts] = useState([])
 
   useEffect(() =>{
     async function fetchProducts() {
@@ -42,10 +24,6 @@ function ProductProvider({ children }) {
     }
     fetchProducts()
   },[])
-
-  useEffect(() => {
-    localStorage.setItem('products', JSON.stringify(products))
-  }, [products])
 
  async function updateProduct(id, updatedProduct) {
     try{
