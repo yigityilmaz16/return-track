@@ -47,18 +47,27 @@ function ProductProvider({ children }) {
     localStorage.setItem('products', JSON.stringify(products))
   }, [products])
 
-  function updateProduct(id, updatedProduct) {
-    setProducts((currentProducts) =>
-      currentProducts.map((product) =>
-        product.id === id
-          ? {
-              ...product,
-              ...updatedProduct,
-              returnPeriodDays: Number(updatedProduct.returnPeriodDays),
-            }
-          : product,
-      ),
-    )
+ async function updateProduct(id, updatedProduct) {
+    try{
+      const response = await fetch(`${API}/${id}`,{
+        method: "PATCH",
+        headers:{
+          "Content-Type" : "application/json"
+        },
+        body: JSON.stringify(updatedProduct)
+    })
+      if(!response.ok){
+        throw new Error('hatalı')
+      }
+      const data = await response.json()
+      setProducts((currentProducts) =>
+    currentProducts.map((currentProduct) =>
+    currentProduct.id === id ? data : currentProduct
+   )
+  )
+    }catch(error){
+      console.log(error)
+    }
   }
 
  async function toggleReturnStatus(id) {
