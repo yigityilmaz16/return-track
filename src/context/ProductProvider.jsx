@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import initialProducts from '../data/products.js'
 import ProductContext from './ProductContext.js'
+const API = 'http://localhost:3000/products'
 
 function ProductProvider({ children }) {
   const [products, setProducts] = useState(() => {
@@ -25,7 +26,7 @@ function ProductProvider({ children }) {
   useEffect(() =>{
     async function fetchProducts() {
       try{
-        const response= await fetch('http://localhost:3000/products')
+        const response= await fetch(API)
         if(!response.ok){
           throw new Error('Hatalı')
         }
@@ -78,15 +79,24 @@ function ProductProvider({ children }) {
     )
   }
 
-  function addProduct(newProduct) {
-    const productToAdd = {
-      ...newProduct,
-      id: Date.now(),
-      returnPeriodDays: Number(newProduct.returnPeriodDays),
-      isReturned: false,
+ async function addProduct(newProduct) {
+    try{
+      const response= await fetch(API,{
+        method: "POST",
+        headers: {
+                "Content-Type": "application/json"
+            },
+         body: JSON.stringify(newProduct) 
+      })
+      if(!response.ok){
+        throw new Error('hata var')
+      }
+      const data = await response.json()
+      setProducts((currentProducts) => [data, ...currentProducts])
+    }catch(error){
+      console.log(error)
     }
 
-    setProducts((currentProducts) => [productToAdd, ...currentProducts])
   }
 
   const contextValue = {
