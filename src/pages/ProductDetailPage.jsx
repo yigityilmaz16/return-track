@@ -4,13 +4,19 @@ import useProducts from '../hooks/useProducts.js'
 
 function ProductDetailPage() {
     const { productid } = useParams();
-    const { products, toggleReturnStatus, deleteProduct } = useProducts();
+    const { products, isLoading, apiError, toggleReturnStatus, deleteProduct } = useProducts();
    const product = products.find(product => String(product.id) === String(productid));
    const navigate = useNavigate();
    function handleDeleteProduct(id) {
     deleteProduct(id);
     navigate('/');
   }
+    if (isLoading) {
+        return <main><p role="status">Ürün yükleniyor...</p></main>
+    }
+    if (apiError) {
+        return <main><p role="alert">{apiError}</p></main>
+    }
     if (!product) {
         return (
             <div>

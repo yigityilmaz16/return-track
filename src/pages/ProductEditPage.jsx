@@ -5,9 +5,17 @@ import ProductForm from '../components/ProductForm.jsx'
 function ProductEditPage() {
     const { productid } = useParams();
     const navigate = useNavigate();
-    const {products, updateProduct} = useProducts();
+    const {products, isLoading, apiError, updateProduct} = useProducts();
 
     const productToEdit = products.find(product => String(product.id) === String(productid));
+
+    if (isLoading) {
+        return <main><p role="status">Ürün yükleniyor...</p></main>
+    }
+
+    if (apiError) {
+        return <main><p role="alert">{apiError}</p></main>
+    }
 
     if (!productToEdit) {
         return (

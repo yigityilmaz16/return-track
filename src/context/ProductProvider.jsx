@@ -4,6 +4,8 @@ const API = 'http://localhost:3000/products'
 
 function ProductProvider({ children }) {
   const [products, setProducts] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [apiError, setApiError] = useState('')
 
   useEffect(() =>{
     async function fetchProducts() {
@@ -18,8 +20,11 @@ function ProductProvider({ children }) {
         }else{
           throw new Error('Hata')
         }
-      }catch(error){
-        console.log(error)
+      } catch (error) {
+        console.error('Ürünler yüklenirken hata oluştu:', error)
+        setApiError('Sunucuya ulaşılamadı. Lütfen daha sonra tekrar deneyin.')
+      } finally {
+        setIsLoading(false)
       }
     }
     fetchProducts()
@@ -116,6 +121,8 @@ function ProductProvider({ children }) {
 
   const contextValue = {
     products,
+    isLoading,
+    apiError,
     addProduct,
     deleteProduct,
     toggleReturnStatus,

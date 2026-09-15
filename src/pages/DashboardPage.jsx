@@ -9,9 +9,33 @@ import DashboardStats from '../components/DashboardStats.jsx'
 function DashboardPage() {
   const [selectedFilter, setSelectedFilter] = useState('all')
 
-  const { products, addProduct, toggleReturnStatus, deleteProduct } = useProducts()
+  const {
+    products,
+    isLoading,
+    apiError,
+    addProduct,
+    toggleReturnStatus,
+    deleteProduct,
+  } = useProducts()
   const [searchTerm, setSearchTerm] = useState("")
   const [sortBy, setSortBy] = useState("default") 
+
+  if (isLoading) {
+    return (
+      <main className="status-page">
+        <p role="status">Ürünler yükleniyor...</p>
+      </main>
+    )
+  }
+
+  if (apiError) {
+    return (
+      <main className="status-page">
+        <h1>Bağlantı hatası</h1>
+        <p role="alert">{apiError}</p>
+      </main>
+    )
+  }
  
   const filteredProducts = products.filter((product) => {
     const remainingDays = calculateRemainingDays(
