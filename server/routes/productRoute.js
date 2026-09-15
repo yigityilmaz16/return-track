@@ -1,4 +1,5 @@
 import express from 'express'
+import {normalizeProductInput,isValidProductInput} from '../utils/productValidation.js'
 
 const router= express.Router()
 const products = []
@@ -7,25 +8,22 @@ router.get("/", (req,res) =>{
 })
 
 router.post("/", (req,res) =>{
-    const { name, store, purchaseDate, returnPeriodDays } = req.body
-    const cleanName = typeof name === 'string' ? name.trim() : ''
-    const cleanStore = typeof store === 'string' ? store.trim() : ''
-    const cleanReturnPeriodDays = Number(returnPeriodDays)
-        if(!cleanStore || !cleanName || !purchaseDate || cleanReturnPeriodDays <= 0 || !Number.isFinite(cleanReturnPeriodDays)){
-        res.status(400).json({
-            message : "Tüm Alanlar Dolu Olmalı Veya Sayılar Pozitif Olmalı!"
-        })
-        return;
-    }
-    const newProduct ={
-        id: Date.now(),
-        name: cleanName,
-        store: cleanStore,
-        purchaseDate: purchaseDate,
-        returnPeriodDays: cleanReturnPeriodDays,
-        isReturned: false
-    }
-    products.push(newProduct);
+   const productData= normalizeProductInput(req.body)
+   if(isValidProductInput(productData) === false){
+    res.status(400).json({
+        message: "Hatalı"
+    })
+    return
+   }
+   const newProduct={
+    id: Date.now(),
+    name: productData.name,
+    store: productData.store,
+    purchaseDate: productData.purchaseDate,
+    returnPeriodDays: productData.returnPeriodDays,
+    isReturned:false
+   }
+   products.push(newProduct);
     res.status(201).json(newProduct);
 
 })
@@ -84,20 +82,17 @@ router.patch("/:id", (req,res) =>{
        })
        return;
     }
-    const { name, store, purchaseDate, returnPeriodDays } = req.body
-    const cleanName = typeof name === 'string' ? name.trim() : ''
-    const cleanStore = typeof store === 'string' ? store.trim() : ''
-    const cleanReturnPeriodDays = Number(returnPeriodDays)
-     if(!cleanStore || !cleanName || !purchaseDate || cleanReturnPeriodDays <= 0 || !Number.isFinite(cleanReturnPeriodDays)){
+    const productData = normalizeProductInput(req.body)
+    if(isValidProductInput(productData) === false){
         res.status(400).json({
-            message : "Tüm Alanlar Dolu Olmalı Veya Sayılar Pozitif Olmalı!"
-        })
-        return;
+         message: "Hatalı"
+       })
+       return;
     }
-    product.name= cleanName
-    product.store= cleanStore
-    product.purchaseDate= purchaseDate
-    product.returnPeriodDays= cleanReturnPeriodDays
+    product.name= productData.name
+    product.store= productData.store
+    product.purchaseDate = productData.purchaseDate
+    product.returnPeriodDays= productData.returnPeriodDays
     res.status(200).json(product)
 })
 
