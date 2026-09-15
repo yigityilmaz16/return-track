@@ -73,11 +73,21 @@ function ProductProvider({ children }) {
     )
   }
 
-  function deleteProduct(id) {
-    setProducts((currentProducts) =>
+ async function deleteProduct(id) {
+  try{
+    const response = await fetch(`${API}/${id}`,{
+      method : "DELETE"
+    })
+    if(!response.ok){
+      throw new Error('Hatalı')
+    }
+     setProducts((currentProducts) =>
       currentProducts.filter((product) => product.id !== id),
     )
+  }catch(error){
+    console.log(error)
   }
+}
 
  async function addProduct(newProduct) {
     try{
