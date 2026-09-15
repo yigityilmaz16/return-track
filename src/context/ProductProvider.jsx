@@ -61,16 +61,34 @@ function ProductProvider({ children }) {
     )
   }
 
-  function toggleReturnStatus(id) {
-    setProducts((currentProducts) =>
-      currentProducts.map((product) => {
-        if (product.id === id) {
-          return { ...product, isReturned: !product.isReturned }
-        }
+ async function toggleReturnStatus(id) {
+   const product= products.find((product) => product.id === id)
+    if(!product){
+      return;
+    }
+   const toggleIsReturned= !product.isReturned
+   try{
+    const response = await fetch(`${API}/${id}/return-status`,{
+      method: "PATCH",
+      headers:{
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify({ isReturned: toggleIsReturned })
+    })
+    if(!response.ok){
+      throw new Error('Hata')
+    }
+    const data = await response.json()
+   setProducts((currentProducts) =>
+    currentProducts.map((currentProduct) =>
+    currentProduct.id === id ? data : currentProduct
+   )
+  )
 
-        return product
-      }),
-    )
+   }catch(error){
+    console.log(error)
+   }
+
   }
 
  async function deleteProduct(id) {
