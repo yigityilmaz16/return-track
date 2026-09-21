@@ -23,7 +23,14 @@ const productSchema = new mongoose.Schema({
     default: false
   }
 }, {
-  timestamps: true // Automatically generates 'createdAt' and 'updatedAt' fields
+  timestamps: true, // Automatically generates 'createdAt' and 'updatedAt' fields
+  toJSON:{
+    virtuals:true,
+    versionKey:false,
+    transform: (doc, ret) => {
+        delete ret._id
+        }
+  }
 });
 
 
