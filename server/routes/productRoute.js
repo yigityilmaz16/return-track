@@ -3,7 +3,6 @@ import {normalizeProductInput,isValidProductInput} from '../utils/productValidat
 import Product from '../models/Product.js'
 
 const router= express.Router()
-const products = []
 router.get("/", async (req,res) =>{
    try{
          const data = await Product.find()
@@ -95,16 +94,8 @@ router.patch("/:id/return-status", async (req,res) =>{
     })
 }
 })
-router.patch("/:id", (req,res) =>{
-    const product = products.find(
-        product => product.id === Number(req.params.id)
-    )
-    if(!product){
-       res.status(404).json({
-         message: "Ürün Bulunamadı"
-       })
-       return;
-    }
+router.patch("/:id", async (req,res) =>{
+   try{
     const productData = normalizeProductInput(req.body)
     if(isValidProductInput(productData) === false){
         res.status(400).json({
@@ -112,11 +103,26 @@ router.patch("/:id", (req,res) =>{
        })
        return;
     }
-    product.name= productData.name
-    product.store= productData.store
-    product.purchaseDate = productData.purchaseDate
-    product.returnPeriodDays= productData.returnPeriodDays
-    res.status(200).json(product)
+    const data = await Product.findByIdAndUpdate(
+        req.params.id,
+        productData,
+        {
+            new: true,
+            runValidators: true
+        }
+    )
+    if(!data){
+       res.status(404).json({
+         message: "Ürün Bulunamadı"
+       })
+       return;
+    }
+    res.status(200).json(data)
+}catch(error){
+    res.status(500).json({
+        message: "hatalı"
+    })
+}
 })
 
 export default router
