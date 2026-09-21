@@ -66,16 +66,8 @@ router.delete("/:id", async (req,res) =>{
 }
 
 })
-router.patch("/:id/return-status", (req,res) =>{
-    const product = products.find(
-        product => product.id === Number(req.params.id) 
-    )
-    if(!product){
-       res.status(404).json({
-         message: "Ürün Bulunamadı"
-       })
-       return;
-    }
+router.patch("/:id/return-status", async (req,res) =>{
+   try{
     const {isReturned} = req.body
     if(typeof isReturned !== 'boolean'){
         res.status(400).json({
@@ -83,8 +75,25 @@ router.patch("/:id/return-status", (req,res) =>{
        })
        return;
     }
-    product.isReturned= isReturned
-    res.status(200).json(product)
+    const data = await Product.findByIdAndUpdate(
+        req.params.id,
+        {isReturned},
+         { 
+        new: true,           
+        runValidators: true  
+         }     )
+    if(!data){
+       res.status(404).json({
+         message: "Ürün Bulunamadı"
+       })
+       return;
+    }
+    res.status(200).json(data)
+}catch(error){
+    res.status(500).json({
+        message: "hata"
+    })
+}
 })
 router.patch("/:id", (req,res) =>{
     const product = products.find(
