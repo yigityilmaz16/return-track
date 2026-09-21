@@ -1,30 +1,36 @@
 import express from 'express'
 import {normalizeProductInput,isValidProductInput} from '../utils/productValidation.js'
+import Product from '../models/Product.js'
 
 const router= express.Router()
 const products = []
-router.get("/", (req,res) =>{
-    res.json(products);
+router.get("/", async (req,res) =>{
+   try{
+         const data = await Product.find()
+         res.json(data)
+   }catch(error){
+    res.status(500).json({
+        message: "Ürünler Alınamadı"
+    })
+   }
 })
 
-router.post("/", (req,res) =>{
-   const productData= normalizeProductInput(req.body)
+router.post("/", async (req,res) =>{
+  try{
+    const productData= normalizeProductInput(req.body)
    if(isValidProductInput(productData) === false){
     res.status(400).json({
         message: "Hatalı"
     })
     return
    }
-   const newProduct={
-    id: Date.now(),
-    name: productData.name,
-    store: productData.store,
-    purchaseDate: productData.purchaseDate,
-    returnPeriodDays: productData.returnPeriodDays,
-    isReturned:false
-   }
-   products.push(newProduct);
-    res.status(201).json(newProduct);
+    const data = await Product.create(productData)
+    res.status(201).json(data);
+}catch(error){
+    res.status(500).json({
+        message:"Başarısız"
+    })
+}
 
 })
 router.get("/:id", (req,res) =>{
