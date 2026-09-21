@@ -7,7 +7,7 @@ router.get("/", async (req,res) =>{
    try{
          const data = await Product.find()
          res.json(data)
-   }catch(error){
+   }catch{
     res.status(500).json({
         message: "Ürünler Alınamadı"
     })
@@ -25,7 +25,7 @@ router.post("/", async (req,res) =>{
    }
     const data = await Product.create(productData)
     res.status(201).json(data);
-}catch(error){
+}catch{
     res.status(500).json({
         message:"Başarısız"
     })
@@ -42,7 +42,7 @@ router.get("/:id", async (req,res) =>{
         return;
     }
     res.status(200).json(data)
-}catch(error){
+}catch{
     res.status(500).json({
         message:"Hata"
     })
@@ -58,7 +58,7 @@ router.delete("/:id", async (req,res) =>{
         return;
     }
     res.status(200).json(data)
-}catch(error){
+}catch{
     res.status(500).json({
         message: "hata"
     })
@@ -88,7 +88,7 @@ router.patch("/:id/return-status", async (req,res) =>{
        return;
     }
     res.status(200).json(data)
-}catch(error){
+}catch{
     res.status(500).json({
         message: "hata"
     })
@@ -118,7 +118,7 @@ router.patch("/:id", async (req,res) =>{
        return;
     }
     res.status(200).json(data)
-}catch(error){
+}catch{
     res.status(500).json({
         message: "hatalı"
     })

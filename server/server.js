@@ -16,7 +16,7 @@ async function startServer() {
     app.listen(PORT, () =>{
     console.log(PORT);
 })
-   }catch(error){
+   }catch{
     console.log("hata")
     process.exit(1)
    }
