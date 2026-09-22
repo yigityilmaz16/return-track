@@ -3,18 +3,16 @@ import {normalizeProductInput,isValidProductInput} from '../utils/productValidat
 import Product from '../models/Product.js'
 
 const router= express.Router()
-router.get("/", async (req,res) =>{
+router.get("/", async (req,res,next) =>{
    try{
          const data = await Product.find()
          res.json(data)
-   }catch{
-    res.status(500).json({
-        message: "Ürünler Alınamadı"
-    })
+   }catch(error){
+   next(error)
    }
 })
 
-router.post("/", async (req,res) =>{
+router.post("/", async (req,res,next) =>{
   try{
     const productData= normalizeProductInput(req.body)
    if(isValidProductInput(productData) === false){
@@ -25,14 +23,12 @@ router.post("/", async (req,res) =>{
    }
     const data = await Product.create(productData)
     res.status(201).json(data);
-}catch{
-    res.status(500).json({
-        message:"Başarısız"
-    })
+}catch(error){
+   next(error)
 }
 
 })
-router.get("/:id", async (req,res) =>{
+router.get("/:id", async (req,res,next) =>{
    try{
     const data= await Product.findById(req.params.id)
     if(!data){
@@ -42,13 +38,11 @@ router.get("/:id", async (req,res) =>{
         return;
     }
     res.status(200).json(data)
-}catch{
-    res.status(500).json({
-        message:"Hata"
-    })
+}catch(error){
+    next(error)
 }
 })
-router.delete("/:id", async (req,res) =>{
+router.delete("/:id", async (req,res,next) =>{
    try{
     const data = await Product.findByIdAndDelete(req.params.id)
     if(!data){
@@ -58,14 +52,12 @@ router.delete("/:id", async (req,res) =>{
         return;
     }
     res.status(200).json(data)
-}catch{
-    res.status(500).json({
-        message: "hata"
-    })
+}catch(error){
+   next(error)
 }
 
 })
-router.patch("/:id/return-status", async (req,res) =>{
+router.patch("/:id/return-status", async (req,res,next) =>{
    try{
     const {isReturned} = req.body
     if(typeof isReturned !== 'boolean'){
@@ -88,13 +80,11 @@ router.patch("/:id/return-status", async (req,res) =>{
        return;
     }
     res.status(200).json(data)
-}catch{
-    res.status(500).json({
-        message: "hata"
-    })
+}catch(error){
+  next(error)
 }
 })
-router.patch("/:id", async (req,res) =>{
+router.patch("/:id", async (req,res,next) =>{
    try{
     const productData = normalizeProductInput(req.body)
     if(isValidProductInput(productData) === false){
@@ -118,10 +108,8 @@ router.patch("/:id", async (req,res) =>{
        return;
     }
     res.status(200).json(data)
-}catch{
-    res.status(500).json({
-        message: "hatalı"
-    })
+}catch(error){
+  next(error)
 }
 })
 
