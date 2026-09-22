@@ -4,6 +4,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import connectDatabase from './config/database.js';
 import errorMiddleware from './middleware/errorMiddleware.js'
+import authRoute from './routes/authRoute.js'
 dotenv.config()
 const PORT =process.env.PORT || 3000
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173'
@@ -11,6 +12,7 @@ const app= express();
 app.use(express.json());
 app.use(cors({ origin: CLIENT_ORIGIN}))
 app.use('/products', productRoute)
+app.use('/auth',authRoute)
 app.use(errorMiddleware)
 async function startServer() {
    try{
