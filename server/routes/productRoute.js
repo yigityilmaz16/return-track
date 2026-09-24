@@ -1,11 +1,16 @@
 import express from 'express'
 import {normalizeProductInput,isValidProductInput} from '../utils/productValidation.js'
 import Product from '../models/Product.js'
+import auth from '../middleware/authMiddleware.js'
 
 const router= express.Router()
+router.use(auth)
+
 router.get("/", async (req,res,next) =>{
    try{
-         const data = await Product.find()
+        const data = await Product.find({
+                owner: req.user._id
+        })
          res.json(data)
    }catch(error){
    next(error)
@@ -21,7 +26,10 @@ router.post("/", async (req,res,next) =>{
     })
     return
    }
-    const data = await Product.create(productData)
+    const data = await Product.create({
+             ...productData,
+             owner: req.user._id
+            })
     res.status(201).json(data);
 }catch(error){
    next(error)
@@ -30,7 +38,7 @@ router.post("/", async (req,res,next) =>{
 })
 router.get("/:id", async (req,res,next) =>{
    try{
-    const data= await Product.findById(req.params.id)
+    const data= await Product.findOne({ _id: req.params.id, owner: req.user._id })
     if(!data){
         res.status(404).json({
             message: "Ürün Bulunamadı"
@@ -44,7 +52,7 @@ router.get("/:id", async (req,res,next) =>{
 })
 router.delete("/:id", async (req,res,next) =>{
    try{
-    const data = await Product.findByIdAndDelete(req.params.id)
+    const data = await Product.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
     if(!data){
         res.status(404).json({
             message: "ürün bulunamadı"
@@ -66,13 +74,14 @@ router.patch("/:id/return-status", async (req,res,next) =>{
        })
        return;
     }
-    const data = await Product.findByIdAndUpdate(
-        req.params.id,
-        {isReturned},
-         { 
-        new: true,           
-        runValidators: true  
-         }     )
+    const data = await Product.findOneAndUpdate(
+                { _id: req.params.id, owner: req.user._id },
+                { isReturned },
+                {
+                      new: true,
+                     runValidators: true
+                }
+            )
     if(!data){
        res.status(404).json({
          message: "Ürün Bulunamadı"
@@ -93,14 +102,14 @@ router.patch("/:id", async (req,res,next) =>{
        })
        return;
     }
-    const data = await Product.findByIdAndUpdate(
-        req.params.id,
-        productData,
-        {
-            new: true,
-            runValidators: true
-        }
-    )
+    const data = await Product.findOneAndUpdate(
+                { _id: req.params.id, owner: req.user._id },
+                 productData ,
+                {
+                      new: true,
+                     runValidators: true
+                }
+            )   
     if(!data){
        res.status(404).json({
          message: "Ürün Bulunamadı"

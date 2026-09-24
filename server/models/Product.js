@@ -21,7 +21,13 @@ const productSchema = new mongoose.Schema({
   isReturned: {
     type: Boolean,
     default: false
-  }
+  },
+  owner:{
+  type: mongoose.Schema.Types.ObjectId,
+  ref:'User',
+  required:true,
+  index: true
+},
 }, {
   timestamps: true, // Automatically generates 'createdAt' and 'updatedAt' fields
   toJSON:{
@@ -29,9 +35,12 @@ const productSchema = new mongoose.Schema({
     versionKey:false,
     transform: (doc, ret) => {
         delete ret._id
+        delete ret.owner
         }
   }
 });
+
+
 
 
 const Product= mongoose.model('Product',productSchema)
