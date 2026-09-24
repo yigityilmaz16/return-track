@@ -2,8 +2,13 @@ import express from 'express'
 import User from '../models/User.js'
 import bcryptjs from 'bcryptjs'
 import  jwt from 'jsonwebtoken';
+import auth from '../middleware/authMiddleware.js';
 
 const router= express.Router();
+
+router.get('/me', auth, (req, res) => {
+  res.json(req.user)
+})
 
 router.post('/login', async (req,res,next) =>{
     try{
