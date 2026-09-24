@@ -39,12 +39,43 @@ function AuthProvider({ children }) {
     restoreSession()
   }, [token])
 
+  async function login(email,password){
+    
+        const response = await fetch("http://localhost:3000/auth/login",{
+            method: "POST",
+            headers:{
+               "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email:email,
+                password:password
+            })
+        })
+        const data = await response.json()
+        if(!response.ok){
+            throw new Error(data.message)
+        }
+        localStorage.setItem("token",data.token)
+        setToken(data.token)
+        setUser(data.user)
+        return data.user
+    
+  }
+
+  function logout(){
+    localStorage.removeItem('token')
+    setToken(null)
+    setUser(null)
+  }
+
   const contextValue = {
     user,
     token,
     setUser,
     setToken,
     isAuthLoading,
+    login,
+    logout
   }
 
   return (
